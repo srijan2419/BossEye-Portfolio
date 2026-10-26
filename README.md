@@ -1,61 +1,65 @@
-# BossEye — Computer Vision Monitoring & Camera Operations
+# BossEye — Commercial Computer-Vision Monitoring Platform
 
-**Commercially deployed computer-vision product • Independently engineered • Production software**
+**Production engineering • Independently built • Delivered for paying clients**
 
-BossEye is a camera-based monitoring platform built to help organizations use existing surveillance infrastructure for operational awareness, event detection, and configurable alerts. I independently engineered and delivered this product through SrijanAI Innovations for paid client use.
+BossEye is an operations-monitoring product built around existing surveillance cameras. I designed and engineered it through SrijanAI Innovations to combine camera connectivity, object/activity tracking, configurable alerts, tenant-aware backend services, and an operator dashboard.
 
-> **Portfolio edition.** This is a curated, sanitized source-code showcase built from genuine product implementation. It is not the complete deployable customer system. The original production repository and its Git history are private and are not linked, forked, or imported here.
+> **Real product, real source.** This repository is a reviewed portfolio selection from the actual application. It is not a toy implementation, a full customer deployment, or a copy of the original production Git history.
 
-## What the product does
+## 30-second overview
 
-- Connects camera infrastructure to a monitoring platform, including an **edge bridge** for on-premise camera connectivity.
-- Provides computer-vision and tracking components for observations, activity analysis, and rule-driven alerts.
-- Manages cameras, zones, and monitoring events through API services.
-- Gives operators a React-based interface for monitoring and reviewing activity.
-- Includes architecture for tenant-aware access, auditing, health checks, and operational hardening.
+| | |
+| --- | --- |
+| **Problem** | Organizations already have cameras but need usable, automated operational visibility. |
+| **What I built** | A camera-to-insights platform with computer-vision tracking, activity alerts, APIs, and operator-facing monitoring. |
+| **My role** | Independent product design, Python monitoring/backend, Go camera-edge components, integrations, and customer delivery. |
+| **Commercial context** | Built and deployed for **paying clients**, with private client and contract information withheld. |
+| **Technologies** | **Python, OpenCV, NumPy, FastAPI, PostgreSQL, Go, ONVIF/camera integrations, React, TypeScript**. |
 
-## Architecture overview
+## Start with the actual engineering
 
-```text
-Existing cameras (customer site)
-       |
-       v
-Go edge bridge / camera discovery / snapshots
-       |
-       v
-Authenticated ingestion + Python/FastAPI services
-       |
-       +--> Tracking / activity analysis / zone rules
-       |
-       +--> PostgreSQL and tenant-scoped operational data
-       |
-       +--> Alerts, event history, reporting APIs
-       |
-       v
-React / TypeScript monitoring dashboard
-```
+These are **source files from the product**, presented for technical review.
 
-## Engineering evidence
+| System | Open the code | What it demonstrates |
+| --- | --- | --- |
+| Computer vision / multi-object tracking | [Advanced tracker](src/backend/tracker.py) | Kalman-based prediction, matching observations across frames, tracking state |
+| Motion analysis | [Motion tracker](src/backend/motion_tracker.py) | Frame-to-frame motion and proximity-based tracking |
+| Operational alerts | [Activity threshold alerts](src/backend/activity_threshold_alert.py) | Translating activity durations and threshold rules into notifications |
+| Multi-tenant API access | [Authentication middleware](src/backend/middleware/auth.py) | JWT handling and tenant context in the backend |
+| Edge-to-server coordination | [Bridge heartbeat](src/bridge/internal/control/heartbeat.go) | On-premise camera agent communication with backend services |
+| Camera integrations | [Device discovery](src/bridge/internal/discovery/orchestrator.go) · [Snapshot handling](src/bridge/internal/snapshot/snapshot.go) | Building around existing camera systems |
+| Monitoring dashboard | [Event distribution](src/frontend/EventDistributionChart.tsx) · [Event log](src/frontend/EventLogTable.tsx) | Operational data and event visibility in React |
 
-The portfolio contains real, reviewed implementation excerpts covering:
+[**Explore the architecture and implementation details →**](ENGINEERING_NOTES.md)
 
-1. **Computer vision:** tracking and activity normalization from the monitoring backend.
-2. **Edge systems:** Go camera bridge components, camera discovery, local state, transport, and adapter logic.
-3. **Backend security:** selected authentication/tenant-access or operational endpoints where safe to show.
-4. **Frontend operations:** monitoring and analytics UI components.
+## System architecture
 
-See [ENGINEERING_NOTES.md](ENGINEERING_NOTES.md) for design decisions and the exact scope of published source.
+~~~mermaid
+flowchart TD
+    C["Existing cameras at customer site"] --> E["Go edge bridge: discovery and snapshots"]
+    E --> I["Authenticated camera ingestion / backend services"]
+    I --> V["Python computer-vision and tracking components"]
+    V --> R["Activity and alert rules"]
+    I --> DB[("PostgreSQL / tenant-scoped data")]
+    R --> DB
+    DB --> UI["React / TypeScript operations dashboard"]
+~~~
 
-## Technical stack
+The engineering challenge is broader than detecting an object in a frame: **integrate real camera hardware**, handle edge connectivity, maintain observations over time, route them through backend services, and make the results actionable for operators.
 
-Python • FastAPI • PostgreSQL • React • TypeScript • Go edge agent • ONVIF / camera integrations • Docker and deployment tooling
+## What I can explain in an interview
 
-## Commercial delivery and ownership
+1. **Tracking across frames:** Prediction, association, and managing detection changes over time.
+2. **Deploying alongside existing infrastructure:** Camera protocols and the Go bridge's local-to-backend communication.
+3. **Operational usefulness:** Turning activity analysis into thresholds, events, and dashboards.
+4. **Backend boundaries:** Tenant-aware authorization and production operations considerations.
+5. **Commercial delivery:** Mapping a real client's monitoring needs into a deployed product, including trade-offs and iteration.
 
-I designed and built BossEye independently and deployed it in paid client engagements. This is a commercial engineering case study, not coursework or a tutorial. Client names, deployment identities, access credentials, surveillance imagery, and private operations are withheld.
+## Commercial proof and portfolio scope
 
-## Scope and safety
+BossEye was engineered for paid customer engagements. The code is technical evidence of the system; payment and customer identity would require separate records or authorized references and are not implied by GitHub source alone.
 
-This **sanitized portfolio edition** is not a full production release. It excludes live cloud credentials, API keys, passwords, customer/camera identifiers, private configurations, recorded footage, and historical production Git commits. The included code represents real engineering work; some modules rely on private services or configuration intentionally absent from this edition.
+**Portfolio scope:** This is a curated selection of authentic modules with a new Git history. It **does not include** production credentials, environment files, customer/camera identifiers, footage, historical commits, or full deployment infrastructure. Some components rely on unpublished dependencies, so this is **not a standalone runnable distribution**.
 
-**Author:** Srijan Choudhary — product founder and engineer.
+**Built by:** Srijan Choudhary • SrijanAI Innovations  
+**Source rights:** All rights reserved; shared for technical portfolio review, not as an open-source license.
